@@ -6,11 +6,8 @@ const today = () => new Date().toISOString().split('T')[0]
 // ── TASKS ──────────────────────────────────────────────────────────
 
 export const TASK_DEFINITIONS = [
-  { key: 'glucose_morning', time: '07:00', icon: '📊', xp: 10,
-    nl: 'Ochtendbloedsuiker meten', en: 'Measure morning blood sugar',
-    fr: 'Mesurer la glycémie du matin', de: 'Morgens Blutzucker messen' },
   { key: 'eat_window_open', time: '11:00', icon: '🥗', xp: 15,
-    nl: 'Eetvenster openen (laag GI)', en: 'Open eating window (low GI)',
+    nl: 'Eetvenster openen (voedingsrijk)', en: 'Open eating window (nutritious)',
     fr: 'Ouvrir la fenêtre alimentaire', de: 'Essensfenster öffnen' },
   { key: 'walk_after_lunch', time: '13:00', icon: '🚶', xp: 20,
     nl: '10 min wandelen na lunch', en: '10 min walk after lunch',
@@ -18,19 +15,18 @@ export const TASK_DEFINITIONS = [
   { key: 'movement_block', time: '16:00', icon: '🏃', xp: 25,
     nl: 'Bewegingsblok (20 min)', en: 'Movement block (20 min)',
     fr: 'Bloc de mouvement (20 min)', de: 'Bewegungsblock (20 Min.)' },
-  { key: 'eat_window_close', time: '19:00', icon: '⏱️', xp: 10,
+  { key: 'eat_window_close', time: '19:00', icon: '⏱', xp: 10,
     nl: 'Eetvenster sluiten', en: 'Close eating window',
     fr: 'Fermer la fenêtre alimentaire', de: 'Essensfenster schließen' },
-  { key: 'evening_reflection', time: '21:00', icon: '📝', xp: 10,
-    nl: 'Avondreflectie', en: 'Evening reflection',
-    fr: 'Réflexion du soir', de: 'Abendreflexion' },
+  { key: 'daily_checkin', time: '21:00', icon: '✍️', xp: 10,
+    nl: 'Dagafsluiting — 1 ding dat goed ging', en: 'Daily check-in — 1 thing that went well',
+    fr: 'Bilan quotidien — 1 chose bien faite', de: 'Tagesabschluss — 1 gute Sache' },
 ]
 
 // Load today's tasks (create defaults if first visit today)
 export async function loadTodayTasks(userId) {
   const date = today()
 
-  // Try to load existing
   const { data, error } = await supabase
     .from('daily_tasks')
     .select('*')
@@ -39,7 +35,6 @@ export async function loadTodayTasks(userId) {
 
   if (error) return { tasks: getDefaultTasks(), error }
 
-  // First time today — insert defaults
   if (!data || data.length === 0) {
     const defaults = TASK_DEFINITIONS.map(t => ({
       user_id:  userId,
@@ -52,7 +47,6 @@ export async function loadTodayTasks(userId) {
     return { tasks: getDefaultTasks(), error: null }
   }
 
-  // Merge DB state with definitions
   return {
     tasks: TASK_DEFINITIONS.map(def => ({
       ...def,
@@ -64,7 +58,6 @@ export async function loadTodayTasks(userId) {
   }
 }
 
-// Toggle a task done/undone
 export async function toggleTask(userId, taskKey, currentDone, xp) {
   const date    = today()
   const newDone = !currentDone
@@ -80,9 +73,7 @@ export async function toggleTask(userId, taskKey, currentDone, xp) {
     .eq('task_key', taskKey)
 
   if (!error) {
-    // Update XP + daily log
     await updateDailyLog(userId, taskKey, newDone, xp)
-    // Update streak on first completion of the day
     if (newDone) await updateStreak(userId)
   }
 
@@ -93,19 +84,15 @@ function getDefaultTasks() {
   return TASK_DEFINITIONS.map(t => ({ ...t, done: false }))
 }
 
-// ── DAILY LOG ──────────────────────────────────────────────────────
-
 async function updateDailyLog(userId, taskKey, done, xp) {
   const date = today()
   const xpDelta = done ? xp : -xp
 
-  // Upsert log for today
   await supabase.from('daily_logs').upsert({
     user_id:  userId,
     log_date: date,
   }, { onConflict: 'user_id,log_date', ignoreDuplicates: true })
 
-  // Count completed tasks
   const { count } = await supabase
     .from('daily_tasks')
     .select('*', { count: 'exact', head: true })
@@ -113,29 +100,14 @@ async function updateDailyLog(userId, taskKey, done, xp) {
     .eq('log_date', date)
     .eq('done', true)
 
-  // Update log
   await supabase.from('daily_logs')
     .update({ tasks_completed: count || 0 })
     .eq('user_id', userId)
     .eq('log_date', date)
 
-  // Update XP on profile
   await supabase.rpc('increment_xp', { p_user_id: userId, p_amount: xpDelta })
 }
 
-// Log glucose reading
-export async function logGlucose(userId, type, value) {
-  const date  = today()
-  const field = type === 'morning' ? 'glucose_morning' : 'glucose_evening'
-
-  await supabase.from('daily_logs').upsert({
-    user_id:  userId,
-    log_date: date,
-    [field]:  value,
-  }, { onConflict: 'user_id,log_date' })
-}
-
-// Load last 7 days of logs (for weekly insight)
 export async function loadWeekLogs(userId) {
   const { data, error } = await supabase
     .from('daily_logs')
@@ -147,14 +119,9 @@ export async function loadWeekLogs(userId) {
   return { logs: data || [], error }
 }
 
-// ── STREAK ────────────────────────────────────────────────────────
-
 async function updateStreak(userId) {
-  // Call the DB function we created in schema
   await supabase.rpc('update_streak', { p_user_id: userId })
 }
-
-// ── HELPERS ──────────────────────────────────────────────────────
 
 function getDateDaysAgo(days) {
   const d = new Date()

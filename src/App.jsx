@@ -21,19 +21,31 @@ const FD = "'Cormorant Garamond', serif"
 const FB = "'Plus Jakarta Sans', sans-serif"
 
 // ═══════════════════════════════════════════════════════════════
+// LH LOGO
+// ═══════════════════════════════════════════════════════════════
+function LHLogo({size=64}){
+  return(
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="lhg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0%" stopColor="#3b82f6"/><stop offset="100%" stopColor="#60a5fa"/></linearGradient></defs>
+      <rect width="64" height="64" rx="18" fill="url(#lhg)"/>
+      <text x="32" y="43" textAnchor="middle" fill="white" fontSize="22" fontFamily="'Plus Jakarta Sans',sans-serif" fontWeight="700" letterSpacing="-1">LH</text>
+    </svg>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
 // TRANSLATIONS (abbreviated — key strings only)
 // ═══════════════════════════════════════════════════════════════
 const LANGS = { nl:'🇳🇱 NL', en:'🇬🇧 EN', fr:'🇫🇷 FR', de:'🇩🇪 DE' }
 const T = {
   nl:{
-    appTagline:'Ludwig Health — Jouw persoonlijke gezondheidscoach.',
+    appTagline:'Geniet van het leven. Voel je beter. Ludwig Health zorgt voor de balans.',
     startBtn:'Start mijn persoonlijk profiel →',splashSub:'2 minuten · Jij bepaalt',
-    splashFeatures:[['🎯','Geen verboden — alleen slimme upgrades'],['🧑‍⚕️','AI coach die jóúw gewoontes kent'],['📷','Supermarkt scanner met direct advies'],['✍️','Jij vertelt ons zelf wat bij jou past']],
+    splashFeatures:[['🎯','Geen diëten — alleen slimme gewoontes'],['🧑‍⚕️','AI coach die jóúw levensstijl kent'],['📷','Supermarkt scanner met direct advies'],['✍️','Jij bepaalt wat bij jou past']],
     step:'Stap',of:'van',next:'Verder →',add:'Toevoegen',skip:'Overslaan',
     yourProfile:'Jouw profiel',recommended:'Aanbevolen',
     step1Label:'Stap 1',step1Title:'Hoe mogen we je noemen?',step1Sub:'Zo spreekt je AI coach je elke dag persoonlijk aan.',
-    namePlaceholder:'Jouw voornaam...',medicationQ:'Gebruik je bloedsuikermedicatie?',medicationSub:'Dit bepaalt welk vastenpatroon veilig is.',
-    medNo:'Nee, geen medicatie',medNoDesc:'Alle patronen beschikbaar',medYes:'Ja, ik gebruik medicatie',medYesDesc:'We passen het patroon veilig aan',
+    namePlaceholder:'Jouw voornaam...',
     step2Label:'Stap 2',step2Title:'Wat geniet je van het meest?',step2Sub:'Kies wat je aanspreekt — niets wordt afgepakt.',
     drinksSec:'🍹 Dranken',foodSec:'🍽 Eten',addOwn:'Staat jouw favoriet er niet bij? Voeg het toe',
     enjoyPlaceholder:'bijv. Leffe blond, outdoor pizzaoven...',
@@ -43,8 +55,11 @@ const T = {
     step3Btn:(n)=>n>0?'Verder →':'Voeg minstens 1 toe',
     step4Label:'Stap 4',step4Title:'Wat zou je echt missen?',step4Sub:'Wees eerlijk — we veroordelen niets.',
     step5Label:'Stap 5',step5Title:'Wanneer eet je het minst bewust?',step5Sub:'Hier helpt de coach je het meest.',
-    patternSec:'⏱ Kies je vastenpatroon',
-    step6Label:'Stap 6',step6Title:'Is er nog iets wat we moeten weten?',step6Sub:'Jouw vrije ruimte — vertel ons alles wat relevant is.',
+    patternSec:'⏱ Kies je eetpatroon',
+    step6Label:'Stap 6',step6Title:'Jouw startpunt',step6Sub:'Optioneel — helpt de coach je beter te begeleiden.',
+    heightLabel:'Lengte (cm)',weightLabel:'Huidig gewicht (kg)',goalWeightLabel:'Doelgewicht (kg)',
+    bmiLabel:'Jouw BMI',heightPh:'bijv. 178',weightPh:'bijv. 85',goalWeightPh:'bijv. 75',
+    step6bTitle:'Nog iets anders?',step6bSub:'Jouw vrije ruimte — vertel ons alles wat relevant is.',
     step6Examples:['🍕 "Ik heb een houtoven buiten"','🥃 "Ik drink elke avond een whiskey"','⏰ "Ik werk in ploegen"','👨‍👩‍👧 "Mijn gezin eet anders"'],
     extraPlaceholder:'Typ iets en klik Toevoegen...',step6Note:'Je coach leest alles en past tips hierop aan.',
     step6Btn:(n)=>n>0?`${n} items — bouw mijn profiel →`:'Overslaan — bouw mijn profiel →',
@@ -52,7 +67,10 @@ const T = {
     coachSays:'Jouw coach',profileItems:(n)=>`Jouw profiel (${n} items)`,ownLabel:'✏️ = door jou toegevoegd',
     patternLabel:'Patroon',fastingLabel:'vasten',startApp:(n)=>`Start Ludwig Health, ${n} →`,coachBusy:'Coach is bezig...',
     greeting:(n)=>`Hallo ${n}!`,greetingSub:'Je coach heeft je profiel gelezen.',
-    tabToday:'Vandaag',tabScan:'Scan',tabWindow:'Venster',tabCoach:'Coach',
+    tabToday:'Vandaag',tabScan:'Scan',tabGoals:'Doelen',tabCoach:'Coach',
+    chatPlaceholder:'Stel je coach een vraag...',chatSend:'→',
+    weightWidget:'Gewichtsdoel',weightCurrent:'Huidig',weightGoal:'Doel',weightTo:'nog te gaan',
+    goalsTitle:'Jouw Doelen',milestones:'Mijlpalen',
     goodMorning:(n)=>`Goedemorgen, ${n}`,streak:'dagen',progress:'Dagvoortgang',
     tasksOf:(a,b)=>`${a} van ${b} taken`,scanCta:'Supermarkt scan',scanCtaSub:'Scan een product — direct advies',
     todayTasks:'Taken vandaag',recentScans:'Recente scans',
@@ -70,18 +88,16 @@ const T = {
     signOut:'Uitloggen',saving:'Opslaan...',saved:'✓ Opgeslagen',
     loadingProfile:'Profiel laden...',errorRetry:'Probeer opnieuw',
     weekFasting:'Eetvenster gehaald',weekMovement:'Bewogen na maaltijd',
-    weekGlucose:'Gem. ochtendscore',weekStreak:'Streak',
-    fastingDays:(n)=>`${n}/7 dagen`,noData:'Nog geen data deze week',
+    weekStreak:'Streak',fastingDays:(n)=>`${n}/7 dagen`,noData:'Nog geen data deze week',
   },
   en:{
-    appTagline:'Ludwig Health — Your personal health coach.',
+    appTagline:'Enjoy life. Feel better. Ludwig Health takes care of the balance.',
     startBtn:'Start my personal profile →',splashSub:'2 minutes · You decide',
-    splashFeatures:[['🎯','No restrictions — only smart upgrades'],['🧑‍⚕️','AI coach who knows your habits'],['📷','Supermarket scanner with instant advice'],['✍️','You tell us what fits your life']],
+    splashFeatures:[['🎯','No diets — only smart habits'],['🧑‍⚕️','AI coach who knows your lifestyle'],['📷','Supermarket scanner with instant advice'],['✍️','You decide what fits your life']],
     step:'Step',of:'of',next:'Continue →',add:'Add',skip:'Skip',
     yourProfile:'Your profile',recommended:'Recommended',
     step1Label:'Step 1',step1Title:'What should we call you?',step1Sub:'Your AI coach will address you personally every day.',
-    namePlaceholder:'Your first name...',medicationQ:'Do you use blood sugar medication?',medicationSub:'This determines which fasting pattern is safe.',
-    medNo:'No, no medication',medNoDesc:'All patterns available',medYes:'Yes, I use medication',medYesDesc:"We'll adapt the pattern safely",
+    namePlaceholder:'Your first name...',
     step2Label:'Step 2',step2Title:'What do you enjoy most?',step2Sub:'Choose what applies — nothing is taken away.',
     drinksSec:'🍹 Drinks',foodSec:'🍽 Food',addOwn:"Your favourite not here? Add it",
     enjoyPlaceholder:'e.g. Bourbon, outdoor pizza oven...',
@@ -91,8 +107,11 @@ const T = {
     step3Btn:(n)=>n>0?'Continue →':'Add at least 1',
     step4Label:'Step 4',step4Title:'What would you really miss?',step4Sub:"Be honest — we don't judge.",
     step5Label:'Step 5',step5Title:'When do you eat least consciously?',step5Sub:'This is where your coach helps most.',
-    patternSec:'⏱ Choose your fasting pattern',
-    step6Label:'Step 6',step6Title:'Anything else we should know?',step6Sub:'Your free space — tell us anything relevant.',
+    patternSec:'⏱ Choose your eating pattern',
+    step6Label:'Step 6',step6Title:'Your starting point',step6Sub:'Optional — helps the coach guide you better.',
+    heightLabel:'Height (cm)',weightLabel:'Current weight (kg)',goalWeightLabel:'Goal weight (kg)',
+    bmiLabel:'Your BMI',heightPh:'e.g. 178',weightPh:'e.g. 85',goalWeightPh:'e.g. 75',
+    step6bTitle:'Anything else?',step6bSub:'Your free space — tell us anything relevant.',
     step6Examples:['🍕 "I have an outdoor pizza oven"','🥃 "I have a whiskey every evening"','⏰ "I work shifts"','👨‍👩‍👧 "My family eats differently"'],
     extraPlaceholder:'Type something and click Add...',step6Note:'Your coach reads everything and tailors tips accordingly.',
     step6Btn:(n)=>n>0?`${n} items — build my profile →`:'Skip — build my profile →',
@@ -100,7 +119,10 @@ const T = {
     coachSays:'Your coach',profileItems:(n)=>`Your profile (${n} items)`,ownLabel:'✏️ = added by you',
     patternLabel:'Pattern',fastingLabel:'fasting',startApp:(n)=>`Start Ludwig Health, ${n} →`,coachBusy:'Coach is busy...',
     greeting:(n)=>`Hello ${n}!`,greetingSub:'Your coach has read your profile.',
-    tabToday:'Today',tabScan:'Scan',tabWindow:'Window',tabCoach:'Coach',
+    tabToday:'Today',tabScan:'Scan',tabGoals:'Goals',tabCoach:'Coach',
+    chatPlaceholder:'Ask your coach anything...',chatSend:'→',
+    weightWidget:'Weight goal',weightCurrent:'Current',weightGoal:'Goal',weightTo:'to go',
+    goalsTitle:'Your Goals',milestones:'Milestones',
     goodMorning:(n)=>`Good morning, ${n}`,streak:'days',progress:'Daily progress',
     tasksOf:(a,b)=>`${a} of ${b} tasks`,scanCta:'Supermarket scan',scanCtaSub:'Scan a product — instant advice',
     todayTasks:"Today's tasks",recentScans:'Recent scans',
@@ -117,19 +139,17 @@ const T = {
     orContinueWith:'Or continue as guest',guestMode:'Continue without account',
     signOut:'Sign out',saving:'Saving...',saved:'✓ Saved',
     loadingProfile:'Loading profile...',errorRetry:'Try again',
-    weekFasting:'Fasting window kept',weekMovement:'Moved after meal',
-    weekGlucose:'Avg morning score',weekStreak:'Streak',
-    fastingDays:(n)=>`${n}/7 days`,noData:'No data this week yet',
+    weekFasting:'Eating window kept',weekMovement:'Moved after meal',
+    weekStreak:'Streak',fastingDays:(n)=>`${n}/7 days`,noData:'No data this week yet',
   },
   fr:{
-    appTagline:'Votre coach diabète — qui comprend votre vie.',
+    appTagline:'Profitez de la vie. Sentez-vous mieux. Ludwig Health s\'occupe de l\'équilibre.',
     startBtn:'Créer mon profil personnel →',splashSub:'2 minutes · Vous décidez',
     splashFeatures:[['🎯','Pas d\'interdits — seulement des améliorations'],['🧑‍⚕️','Coach IA qui connaît vos habitudes'],['📷','Scanner supermarché avec conseils instantanés'],['✍️','Vous nous dites ce qui vous convient']],
     step:'Étape',of:'sur',next:'Continuer →',add:'Ajouter',skip:'Passer',
     yourProfile:'Votre profil',recommended:'Recommandé',
     step1Label:'Étape 1',step1Title:'Comment pouvons-nous vous appeler?',step1Sub:'Votre coach IA vous parlera personnellement chaque jour.',
-    namePlaceholder:'Votre prénom...',medicationQ:'Prenez-vous des médicaments pour la glycémie?',medicationSub:'Cela détermine quel schéma de jeûne est sûr.',
-    medNo:'Non, pas de médicaments',medNoDesc:'Tous les schémas disponibles',medYes:'Oui, je prends des médicaments',medYesDesc:'Nous adapterons le schéma en toute sécurité',
+    namePlaceholder:'Votre prénom...',
     step2Label:'Étape 2',step2Title:'Qu\'est-ce que vous appréciez le plus?',step2Sub:'Choisissez — rien ne sera supprimé.',
     drinksSec:'🍹 Boissons',foodSec:'🍽 Nourriture',addOwn:'Votre favori n\'est pas là? Ajoutez-le',
     enjoyPlaceholder:'ex. Bordeaux, four à pizza...',
@@ -139,8 +159,11 @@ const T = {
     step3Btn:(n)=>n>0?'Continuer →':'Ajoutez au moins 1',
     step4Label:'Étape 4',step4Title:'Qu\'est-ce qui vous manquerait vraiment?',step4Sub:'Soyez honnête — nous ne jugeons pas.',
     step5Label:'Étape 5',step5Title:'Quand mangez-vous le moins consciemment?',step5Sub:'C\'est là que votre coach vous aide le plus.',
-    patternSec:'⏱ Choisissez votre schéma de jeûne',
-    step6Label:'Étape 6',step6Title:'Y a-t-il autre chose à savoir?',step6Sub:'Votre espace libre — dites-nous tout ce qui est pertinent.',
+    patternSec:'⏱ Choisissez votre schéma alimentaire',
+    step6Label:'Étape 6',step6Title:'Votre point de départ',step6Sub:'Facultatif — aide le coach à mieux vous guider.',
+    heightLabel:'Taille (cm)',weightLabel:'Poids actuel (kg)',goalWeightLabel:'Poids cible (kg)',
+    bmiLabel:'Votre IMC',heightPh:'ex. 178',weightPh:'ex. 85',goalWeightPh:'ex. 75',
+    step6bTitle:'Autre chose?',step6bSub:'Votre espace libre — dites-nous tout ce qui est pertinent.',
     step6Examples:['🍕 "J\'ai un four à pizza extérieur"','🥃 "Je bois un whisky chaque soir"','⏰ "Je travaille en horaires décalés"','👨‍👩‍👧 "Ma famille mange différemment"'],
     extraPlaceholder:'Tapez quelque chose et cliquez Ajouter...',step6Note:'Votre coach lit tout et adapte les conseils en conséquence.',
     step6Btn:(n)=>n>0?`${n} éléments — créer mon profil →`:'Passer — créer mon profil →',
@@ -148,7 +171,10 @@ const T = {
     coachSays:'Votre coach',profileItems:(n)=>`Votre profil (${n} éléments)`,ownLabel:'✏️ = ajouté par vous',
     patternLabel:'Schéma',fastingLabel:'jeûne',startApp:(n)=>`Démarrer GlycoDay, ${n} →`,coachBusy:'Le coach est occupé...',
     greeting:(n)=>`Bonjour ${n}!`,greetingSub:'Votre coach a lu votre profil.',
-    tabToday:'Aujourd\'hui',tabScan:'Scanner',tabWindow:'Fenêtre',tabCoach:'Coach',
+    tabToday:'Aujourd\'hui',tabScan:'Scanner',tabGoals:'Objectifs',tabCoach:'Coach',
+    chatPlaceholder:'Posez une question...',chatSend:'→',
+    weightWidget:'Objectif poids',weightCurrent:'Actuel',weightGoal:'Cible',weightTo:'restants',
+    goalsTitle:'Vos Objectifs',milestones:'Étapes',
     goodMorning:(n)=>`Bonjour, ${n}`,streak:'jours',progress:'Progrès du jour',
     tasksOf:(a,b)=>`${a} sur ${b} tâches`,scanCta:'Scanner supermarché',scanCtaSub:'Scannez un produit — conseil immédiat',
     todayTasks:'Tâches du jour',recentScans:'Scans récents',
@@ -166,18 +192,16 @@ const T = {
     signOut:'Se déconnecter',saving:'Enregistrement...',saved:'✓ Enregistré',
     loadingProfile:'Chargement du profil...',errorRetry:'Réessayer',
     weekFasting:'Fenêtre respectée',weekMovement:'Bougé après repas',
-    weekGlucose:'Score matinal moy.',weekStreak:'Série',
-    fastingDays:(n)=>`${n}/7 jours`,noData:'Pas encore de données cette semaine',
+    weekStreak:'Série',fastingDays:(n)=>`${n}/7 jours`,noData:'Pas encore de données cette semaine',
   },
   de:{
-    appTagline:'Dein Diabetes-Coach — der dein Leben versteht.',
+    appTagline:'Genieße das Leben. Fühle dich besser. Ludwig Health sorgt für die Balance.',
     startBtn:'Mein persönliches Profil starten →',splashSub:'2 Minuten · Du entscheidest',
     splashFeatures:[['🎯','Keine Verbote — nur clevere Upgrades'],['🧑‍⚕️','KI-Coach der deine Gewohnheiten kennt'],['📷','Supermarkt-Scanner mit sofortigem Rat'],['✍️','Du sagst uns selbst was zu dir passt']],
     step:'Schritt',of:'von',next:'Weiter →',add:'Hinzufügen',skip:'Überspringen',
     yourProfile:'Dein Profil',recommended:'Empfohlen',
     step1Label:'Schritt 1',step1Title:'Wie dürfen wir dich nennen?',step1Sub:'So spricht dich dein KI-Coach täglich persönlich an.',
-    namePlaceholder:'Dein Vorname...',medicationQ:'Nimmst du Blutzuckermedikamente?',medicationSub:'Das bestimmt welches Fastenmuster sicher ist.',
-    medNo:'Nein, keine Medikamente',medNoDesc:'Alle Muster verfügbar',medYes:'Ja, ich nehme Medikamente',medYesDesc:'Wir passen das Muster sicher an',
+    namePlaceholder:'Dein Vorname...',
     step2Label:'Schritt 2',step2Title:'Was genießt du am meisten?',step2Sub:'Wähle aus — nichts wird weggenommen.',
     drinksSec:'🍹 Getränke',foodSec:'🍽 Essen',addOwn:'Dein Favorit nicht dabei? Füge ihn hinzu',
     enjoyPlaceholder:'z.B. Weißwein, Outdoor-Pizzaofen...',
@@ -187,8 +211,11 @@ const T = {
     step3Btn:(n)=>n>0?'Weiter →':'Füge mindestens 1 hinzu',
     step4Label:'Schritt 4',step4Title:'Was würdest du wirklich vermissen?',step4Sub:'Sei ehrlich — wir urteilen nicht.',
     step5Label:'Schritt 5',step5Title:'Wann isst du am wenigsten bewusst?',step5Sub:'Hier hilft dir der Coach am meisten.',
-    patternSec:'⏱ Wähle dein Fastenmuster',
-    step6Label:'Schritt 6',step6Title:'Gibt es noch etwas das wir wissen sollten?',step6Sub:'Dein freier Raum — erzähl uns alles Relevante.',
+    patternSec:'⏱ Wähle dein Essmuster',
+    step6Label:'Schritt 6',step6Title:'Dein Ausgangspunkt',step6Sub:'Optional — hilft dem Coach dich besser zu begleiten.',
+    heightLabel:'Größe (cm)',weightLabel:'Aktuelles Gewicht (kg)',goalWeightLabel:'Zielgewicht (kg)',
+    bmiLabel:'Dein BMI',heightPh:'z.B. 178',weightPh:'z.B. 85',goalWeightPh:'z.B. 75',
+    step6bTitle:'Noch etwas?',step6bSub:'Dein freier Raum — erzähl uns alles Relevante.',
     step6Examples:['🍕 "Ich habe einen Außen-Pizzaofen"','🥃 "Ich trinke jeden Abend einen Whisky"','⏰ "Ich arbeite im Schichtdienst"','👨‍👩‍👧 "Meine Familie isst anders"'],
     extraPlaceholder:'Tippe etwas und klicke Hinzufügen...',step6Note:'Dein Coach liest alles und passt die Tipps darauf an.',
     step6Btn:(n)=>n>0?`${n} Elemente — Profil erstellen →`:'Überspringen — Profil erstellen →',
@@ -196,7 +223,10 @@ const T = {
     coachSays:'Dein Coach',profileItems:(n)=>`Dein Profil (${n} Elemente)`,ownLabel:'✏️ = von dir hinzugefügt',
     patternLabel:'Muster',fastingLabel:'Fasten',startApp:(n)=>`Ludwig Health starten, ${n} →`,coachBusy:'Coach ist beschäftigt...',
     greeting:(n)=>`Hallo ${n}!`,greetingSub:'Dein Coach hat dein Profil gelesen.',
-    tabToday:'Heute',tabScan:'Scan',tabWindow:'Fenster',tabCoach:'Coach',
+    tabToday:'Heute',tabScan:'Scan',tabGoals:'Ziele',tabCoach:'Coach',
+    chatPlaceholder:'Frag deinen Coach...',chatSend:'→',
+    weightWidget:'Gewichtsziel',weightCurrent:'Aktuell',weightGoal:'Ziel',weightTo:'noch',
+    goalsTitle:'Deine Ziele',milestones:'Meilensteine',
     goodMorning:(n)=>`Guten Morgen, ${n}`,streak:'Tage',progress:'Tagesfortschritt',
     tasksOf:(a,b)=>`${a} von ${b} Aufgaben`,scanCta:'Supermarkt-Scan',scanCtaSub:'Produkt scannen — sofortiger Rat',
     todayTasks:'Aufgaben heute',recentScans:'Letzte Scans',
@@ -213,9 +243,8 @@ const T = {
     orContinueWith:'Oder als Gast fortfahren',guestMode:'Ohne Konto fortfahren',
     signOut:'Abmelden',saving:'Speichern...',saved:'✓ Gespeichert',
     loadingProfile:'Profil wird geladen...',errorRetry:'Erneut versuchen',
-    weekFasting:'Fastenfenster eingehalten',weekMovement:'Nach Mahlzeit bewegt',
-    weekGlucose:'Ø Morgen-Score',weekStreak:'Streak',
-    fastingDays:(n)=>`${n}/7 Tage`,noData:'Noch keine Daten diese Woche',
+    weekFasting:'Essensfenster eingehalten',weekMovement:'Nach Mahlzeit bewegt',
+    weekStreak:'Streak',fastingDays:(n)=>`${n}/7 Tage`,noData:'Noch keine Daten diese Woche',
   },
 }
 
@@ -289,8 +318,10 @@ const SUGG={
 // ═══════════════════════════════════════════════════════════════
 // AI HELPERS
 // ═══════════════════════════════════════════════════════════════
-async function streamAI(prompt, onChunk) {
-  const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:220,stream:true,messages:[{role:'user',content:prompt}]})})
+async function streamAI(prompt, onChunk, systemPrompt) {
+  const body = {model:'claude-sonnet-4-6',max_tokens:300,stream:true,messages:[{role:'user',content:prompt}]}
+  if(systemPrompt) body.system = systemPrompt
+  const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','x-api-key':import.meta.env.VITE_ANTHROPIC_API_KEY},body:JSON.stringify(body)})
   const reader=res.body.getReader(); const dec=new TextDecoder(); let full=''
   while(true){const{done,value}=await reader.read();if(done)break;dec.decode(value).split('\n').filter(l=>l.startsWith('data:')).forEach(line=>{try{const j=JSON.parse(line.slice(5));if(j.type==='content_block_delta'&&j.delta?.text){full+=j.delta.text;onChunk(full);}}catch{}})}
   return full
@@ -307,7 +338,27 @@ function buildProfilePrompt(name,data,lang){
 
 function coachDailyPrompt(profile,lang,done,total){
   const enjoy=(profile.enjoy||[]).slice(0,3).join(', ')
-  const L={nl:`Je bent een warme gezondheidscoach. Schrijf een persoonlijke dagelijkse boodschap in het Nederlands voor ${profile.first_name}. Streak: ${profile.streak||0} dagen. Patroon: ${profile.fasting_pattern}. Taken vandaag: ${done}/${total}. Geniet van: ${enjoy}. Max 2 zinnen, eindig met een concrete actie.`,en:`You are a warm health coach. Write a personal daily message in English for ${profile.first_name}. Streak: ${profile.streak||0} days. Pattern: ${profile.fasting_pattern}. Tasks today: ${done}/${total}. Enjoys: ${enjoy}. Max 2 sentences, end with a concrete action.`,fr:`Vous êtes un coach diabète chaleureux. Rédigez un message quotidien en français pour ${profile.first_name}. Série: ${profile.streak||0} jours. Schéma: ${profile.fasting_pattern}. Tâches: ${done}/${total}. Apprécie: ${enjoy}. Max 2 phrases, terminez par une action concrète.`,de:`Du bist ein warmer Gesundheits-Coach. Schreibe eine tägliche Nachricht auf Deutsch für ${profile.first_name}. Streak: ${profile.streak||0} Tage. Muster: ${profile.fasting_pattern}. Aufgaben: ${done}/${total}. Genießt: ${enjoy}. Max 2 Sätze, mit konkreter Aktion enden.`}
+  const taskCtx=done===0?'heeft nog geen taken gedaan vandaag':done===total?`heeft alle ${total} taken gedaan — perfect!`:`heeft ${done} van ${total} taken gedaan`
+  const taskCtxEn=done===0?'has not completed any tasks yet today':done===total?`completed all ${total} tasks — perfect!`:`completed ${done} of ${total} tasks`
+  const taskCtxFr=done===0?'n\'a encore complété aucune tâche aujourd\'hui':done===total?`a complété toutes les ${total} tâches — parfait!`:`a complété ${done} sur ${total} tâches`
+  const taskCtxDe=done===0?'hat heute noch keine Aufgaben erledigt':done===total?`alle ${total} Aufgaben erledigt — perfekt!`:`${done} von ${total} Aufgaben erledigt`
+  const L={
+    nl:`Je bent Ludwig Health, een warme persoonlijke coach voor mensen die van het goede leven houden. Schrijf een persoonlijke dagelijkse boodschap in het Nederlands voor ${profile.first_name}. ${profile.first_name} ${taskCtx}. Streak: ${profile.streak||0} dagen. Patroon: ${profile.fasting_pattern}. Geniet van: ${enjoy||'lekker eten en leven'}. Wees eerlijk en contextueel — geen generieke aanmoediging als er nog niets gedaan is. Max 2 zinnen, eindig met 1 concrete actie voor nu.`,
+    en:`You are Ludwig Health, a warm personal coach for people who enjoy the good life. Write a personal daily message in English for ${profile.first_name}. ${profile.first_name} ${taskCtxEn}. Streak: ${profile.streak||0} days. Pattern: ${profile.fasting_pattern}. Enjoys: ${enjoy||'good food and life'}. Be honest and contextual — no generic encouragement if nothing done yet. Max 2 sentences, end with 1 concrete action for now.`,
+    fr:`Vous êtes Ludwig Health, un coach chaleureux pour les personnes qui aiment la belle vie. Rédigez un message quotidien en français pour ${profile.first_name}. ${profile.first_name} ${taskCtxFr}. Série: ${profile.streak||0} jours. Schéma: ${profile.fasting_pattern}. Apprécie: ${enjoy||'la bonne vie'}. Soyez honnête et contextuel. Max 2 phrases, 1 action concrète.`,
+    de:`Du bist Ludwig Health, ein warmer persönlicher Coach für Menschen die das gute Leben genießen. Schreibe eine tägliche Nachricht auf Deutsch für ${profile.first_name}. ${profile.first_name} hat ${taskCtxDe}. Streak: ${profile.streak||0} Tage. Muster: ${profile.fasting_pattern}. Genießt: ${enjoy||'gutes Essen und Leben'}. Sei ehrlich und kontextuell. Max 2 Sätze, 1 konkrete Aktion.`,
+  }
+  return L[lang]||L.nl
+}
+
+function coachSystemPrompt(profile,lang){
+  const enjoy=(profile.enjoy||[]).slice(0,5).join(', ')
+  const L={
+    nl:`Je bent Ludwig Health, een warme persoonlijke gezondheidscoach. Je begeleidt ${profile.first_name}, die geniet van: ${enjoy||'lekker leven'}. Ze volgen het ${profile.fasting_pattern} eetpatroon. Jouw filosofie: geniet van het leven en voel je beter — geen verboden, geen diëten, alleen slimme keuzes. Antwoord altijd in het Nederlands. Wees warm, concreet en kort (max 3 zinnen per antwoord).`,
+    en:`You are Ludwig Health, a warm personal health coach. You guide ${profile.first_name}, who enjoys: ${enjoy||'good living'}. They follow the ${profile.fasting_pattern} eating pattern. Your philosophy: enjoy life and feel better — no restrictions, no diets, only smart choices. Always reply in English. Be warm, concrete and brief (max 3 sentences).`,
+    fr:`Vous êtes Ludwig Health, un coach de santé personnel chaleureux. Vous guidez ${profile.first_name}, qui apprécie: ${enjoy||'la belle vie'}. Ils suivent le schéma alimentaire ${profile.fasting_pattern}. Votre philosophie: profiter de la vie et se sentir mieux. Répondez toujours en français. Soyez chaleureux, concret et bref (3 phrases max).`,
+    de:`Du bist Ludwig Health, ein warmer persönlicher Gesundheitscoach. Du begleitest ${profile.first_name}, der/die genießt: ${enjoy||'gutes Leben'}. Sie folgen dem ${profile.fasting_pattern} Essmuster. Deine Philosophie: das Leben genießen und sich besser fühlen. Antworte immer auf Deutsch. Sei warm, konkret und kurz (max 3 Sätze).`,
+  }
   return L[lang]||L.nl
 }
 
@@ -397,8 +448,8 @@ function AuthScreen({lang,setLang,onGuest}){
   return(
     <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'40px 24px',animation:'fadeUp 0.5s ease'}}>
       <div style={{display:'flex',justifyContent:'flex-end',marginBottom:'32px'}}><LangSwitcher lang={lang} setLang={setLang}/></div>
-      <div style={{width:'64px',height:'64px',borderRadius:'20px',background:`linear-gradient(135deg,${C.accentDim},${C.accent})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'28px',marginBottom:'20px',boxShadow:`0 8px 32px ${C.accentGlow}`}}>🩺</div>
-      <h1 style={{fontFamily:FD,fontSize:'42px',color:C.text,lineHeight:1,marginBottom:'8px'}}>Glyco<span style={{color:C.accent}}>Day</span></h1>
+      <div style={{marginBottom:'20px'}}><LHLogo size={64}/></div>
+      <h1 style={{fontFamily:FD,fontSize:'42px',color:C.text,lineHeight:1,marginBottom:'8px'}}>Ludwig <span style={{color:C.accent}}>Health</span></h1>
       <p style={{color:C.textDim,fontSize:'15px',fontFamily:FB,lineHeight:1.6,marginBottom:'32px'}}>{t.appTagline}</p>
 
       {!sent?(
@@ -427,12 +478,21 @@ function AuthScreen({lang,setLang,onGuest}){
 }
 
 // ═══════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════
+function calcBMI(height,weight){
+  const h=parseFloat(height),w=parseFloat(weight)
+  if(!h||!w||h<100||w<20)return null
+  return (w/((h/100)**2)).toFixed(1)
+}
+
+// ═══════════════════════════════════════════════════════════════
 // ONBOARDING
 // ═══════════════════════════════════════════════════════════════
 function Onboarding({lang,setLang,userId,onComplete}){
   const[step,setStep]=useState(0)
   const[anim,setAnim]=useState(true)
-  const[data,setData]=useState({name:'',usesMedication:null,enjoy:[],customEnjoy:[],rituals:[],customRituals:[],miss:[],weakMoments:[],anythingElse:[],pattern:'16-8'})
+  const[data,setData]=useState({name:'',usesMedication:false,enjoy:[],customEnjoy:[],rituals:[],customRituals:[],miss:[],weakMoments:[],anythingElse:[],pattern:'16-8',height:'',weight:'',goalWeight:''})
   const[welcome,setWelcome]=useState('');const[streaming,setStreaming]=useState(false);const[profileReady,setProfileReady]=useState(false)
   const[saving,setSaving]=useState(false)
   const t=T[lang]||T.nl;const TOTAL=8
@@ -471,8 +531,8 @@ function Onboarding({lang,setLang,userId,onComplete}){
     <div style={{flex:1,display:'flex',flexDirection:'column'}}>
       <div style={{padding:'20px 24px 12px',display:'flex',justifyContent:'flex-end'}}><LangSwitcher lang={lang} setLang={setLang}/></div>
       <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'0 24px',animation:'fadeUp 0.6s ease'}}>
-        <div style={{width:'64px',height:'64px',borderRadius:'20px',background:`linear-gradient(135deg,${C.accentDim},${C.accent})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'28px',marginBottom:'20px',boxShadow:`0 8px 32px ${C.accentGlow}`}}>🩺</div>
-        <h1 style={{fontFamily:FD,fontSize:'46px',color:C.text,lineHeight:1,marginBottom:'12px'}}>Glyco<span style={{color:C.accent}}>Day</span></h1>
+        <div style={{marginBottom:'20px'}}><LHLogo size={64}/></div>
+        <h1 style={{fontFamily:FD,fontSize:'46px',color:C.text,lineHeight:1,marginBottom:'12px'}}>Ludwig <span style={{color:C.accent}}>Health</span></h1>
         <p style={{color:C.textDim,fontSize:'15px',fontFamily:FB,lineHeight:1.65,marginBottom:'32px'}}>{t.appTagline}</p>
         {t.splashFeatures.map(([icon,text],i)=>(
           <div key={i} style={{display:'flex',alignItems:'center',gap:'14px',marginBottom:'14px',animation:`fadeUp 0.5s ease ${i*0.1+0.2}s both`}}>
@@ -485,7 +545,7 @@ function Onboarding({lang,setLang,userId,onComplete}){
     </div>
   )
 
-  if(step===1)return(<><TopRow/><Body><Lbl c={t.step1Label}/><Heading c={t.step1Title}/><Sub c={t.step1Sub}/><input value={data.name} onChange={e=>setData(d=>({...d,name:e.target.value}))} placeholder={t.namePlaceholder} autoFocus style={inputSt}/><Heading c={t.medicationQ} s={{fontSize:'20px'}}/><Sub c={t.medicationSub}/><CardBtn onClick={()=>setData(d=>({...d,usesMedication:false}))} selected={data.usesMedication===false} icon="✅" label={t.medNo} desc={t.medNoDesc}/><CardBtn onClick={()=>setData(d=>({...d,usesMedication:true}))} selected={data.usesMedication===true} icon="⚠️" label={t.medYes} desc={t.medYesDesc}/></Body><Foot><PriBtn onClick={next} disabled={!data.name.trim()||data.usesMedication===null}>{t.next}</PriBtn></Foot></>)
+  if(step===1)return(<><TopRow/><Body><Lbl c={t.step1Label}/><Heading c={t.step1Title}/><Sub c={t.step1Sub}/><input value={data.name} onChange={e=>setData(d=>({...d,name:e.target.value}))} onKeyDown={e=>e.key==='Enter'&&data.name.trim()&&next()} placeholder={t.namePlaceholder} autoFocus style={inputSt}/></Body><Foot><PriBtn onClick={next} disabled={!data.name.trim()}>{t.next}</PriBtn></Foot></>)
 
   if(step===2){
     const items=data.enjoy.map(id=>[...ENJOY_DATA.drinks,...ENJOY_DATA.food].find(o=>o.id===id)?.[lang]).filter(Boolean)
@@ -499,9 +559,31 @@ function Onboarding({lang,setLang,userId,onComplete}){
 
   if(step===4)return(<><TopRow/><Body><Lbl c={t.step4Label}/><Heading c={t.step4Title}/><Sub c={t.step4Sub}/><MultiSelect options={MISS_DATA} selected={data.miss} onToggle={id=>toggle('miss',id)} lang={lang}/></Body><Foot><PriBtn onClick={next} disabled={data.miss.length===0}>{t.next}</PriBtn></Foot></>)
 
-  if(step===5)return(<><TopRow/><Body><Lbl c={t.step5Label}/><Heading c={t.step5Title}/><Sub c={t.step5Sub}/><MultiSelect options={WEAK_DATA} selected={data.weakMoments} onToggle={id=>toggle('weakMoments',id)} lang={lang}/><div style={{marginTop:'28px'}}><SecLbl c={t.patternSec}/></div>{PATTERN_DATA.filter(p=>data.usesMedication?p.id==='12-12':true).map(p=><div key={p.id} style={{position:'relative'}}>{p.recommended&&<span style={{position:'absolute',top:'12px',right:'12px',background:C.gold,color:'#000',fontSize:'10px',fontWeight:'700',padding:'2px 8px',borderRadius:'20px',zIndex:1}}>{t.recommended}</span>}<CardBtn onClick={()=>setData(d=>({...d,pattern:p.id}))} selected={data.pattern===p.id} icon={p.icon} label={`${p.id} — ${p.desc[lang]||p.desc.nl}`} desc={p.detail[lang]||p.detail.nl}/></div>)}</Body><Foot><PriBtn onClick={next} disabled={data.weakMoments.length===0}>{t.next}</PriBtn></Foot></>)
+  if(step===5)return(<><TopRow/><Body><Lbl c={t.step5Label}/><Heading c={t.step5Title}/><Sub c={t.step5Sub}/><MultiSelect options={WEAK_DATA} selected={data.weakMoments} onToggle={id=>toggle('weakMoments',id)} lang={lang}/><div style={{marginTop:'28px'}}><SecLbl c={t.patternSec}/></div>{PATTERN_DATA.map(p=><div key={p.id} style={{position:'relative'}}>{p.recommended&&<span style={{position:'absolute',top:'12px',right:'12px',background:C.gold,color:'#000',fontSize:'10px',fontWeight:'700',padding:'2px 8px',borderRadius:'20px',zIndex:1}}>{t.recommended}</span>}<CardBtn onClick={()=>setData(d=>({...d,pattern:p.id}))} selected={data.pattern===p.id} icon={p.icon} label={`${p.id} — ${p.desc[lang]||p.desc.nl}`} desc={p.detail[lang]||p.detail.nl}/></div>)}</Body><Foot><PriBtn onClick={next} disabled={data.weakMoments.length===0}>{t.next}</PriBtn></Foot></>)
 
-  if(step===6)return(<><TopRow/><Body><Lbl c={t.step6Label}/><Heading c={t.step6Title}/><Sub c={t.step6Sub}/><div style={{background:C.accentGlow,border:`1px solid ${C.cardBorder}`,borderRadius:'14px',padding:'14px 16px',marginBottom:'20px'}}>{t.step6Examples.map((ex,i)=><div key={i} style={{color:C.textDim,fontSize:'12px',fontFamily:FB,marginBottom:'5px'}}>{ex}</div>)}</div><TagInput value={data.anythingElse} onChange={v=>setData(d=>({...d,anythingElse:v}))} placeholder={t.extraPlaceholder} suggestions={SUGG.extra[lang]||SUGG.extra.nl} addLabel={t.add}/>{data.anythingElse.length>0&&<div style={{background:C.card,border:`1px solid ${C.cardBorder}`,borderRadius:'12px',padding:'12px 14px',marginTop:'16px'}}><span style={{color:C.textDim,fontSize:'11px',fontFamily:FB}}>{t.step6Added(data.anythingElse.length)}</span><div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginTop:'8px'}}>{data.anythingElse.map((item,i)=><span key={i} style={{...profileTagStyle,borderColor:C.gold,color:C.gold,background:C.goldGlow}}>✏️ {item}</span>)}</div></div>}<p style={{color:C.textDim,fontSize:'12px',fontFamily:FB,marginTop:'16px',lineHeight:1.6}}>{t.step6Note}</p></Body><Foot><PriBtn onClick={next}>{t.step6Btn(data.anythingElse.length)}</PriBtn></Foot></>)
+  if(step===6){
+    const bmi=calcBMI(data.height,data.weight)
+    const numSt={width:'100%',padding:'13px 16px',background:C.card,border:`1.5px solid ${C.cardBorder}`,borderRadius:'12px',color:C.text,fontSize:'16px',fontFamily:FB,outline:'none',marginBottom:'12px'}
+    return(<><TopRow/><Body>
+      <Lbl c={t.step6Label}/><Heading c={t.step6Title}/><Sub c={t.step6Sub}/>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'4px'}}>
+        <div><div style={{color:C.textDim,fontSize:'11px',fontFamily:FB,marginBottom:'5px'}}>{t.heightLabel}</div><input type="number" value={data.height} onChange={e=>setData(d=>({...d,height:e.target.value}))} placeholder={t.heightPh||'178'} style={numSt}/></div>
+        <div><div style={{color:C.textDim,fontSize:'11px',fontFamily:FB,marginBottom:'5px'}}>{t.weightLabel}</div><input type="number" value={data.weight} onChange={e=>setData(d=>({...d,weight:e.target.value}))} placeholder={t.weightPh||'85'} style={numSt}/></div>
+      </div>
+      <div style={{marginBottom:'16px'}}><div style={{color:C.textDim,fontSize:'11px',fontFamily:FB,marginBottom:'5px'}}>{t.goalWeightLabel}</div><input type="number" value={data.goalWeight} onChange={e=>setData(d=>({...d,goalWeight:e.target.value}))} placeholder={t.goalWeightPh||'75'} style={{...numSt,marginBottom:0}}/></div>
+      {bmi&&<div style={{background:C.accentGlow,border:`1px solid ${C.accentDim}`,borderRadius:'12px',padding:'12px 16px',marginBottom:'20px',display:'flex',alignItems:'center',gap:'12px'}}>
+        <div style={{textAlign:'center',minWidth:'50px'}}><div style={{color:C.accent,fontSize:'22px',fontFamily:FD,fontWeight:'700'}}>{bmi}</div><div style={{color:C.textDim,fontSize:'10px',fontFamily:FB}}>{t.bmiLabel||'BMI'}</div></div>
+        <div style={{height:'40px',width:'1px',background:C.cardBorder}}/>
+        <div style={{flex:1}}><div style={{height:'6px',background:C.muted,borderRadius:'3px',overflow:'hidden'}}><div style={{height:'100%',width:`${Math.min(((parseFloat(bmi)-15)/25)*100,100)}%`,background:`linear-gradient(90deg,${C.accent},${C.good})`,borderRadius:'3px'}}/></div><div style={{color:C.textDim,fontSize:'11px',fontFamily:FB,marginTop:'4px'}}>{parseFloat(bmi)<18.5?'Ondergewicht':parseFloat(bmi)<25?'Gezond gewicht':parseFloat(bmi)<30?'Overgewicht':'Obesitas'}</div></div>
+      </div>}
+      <div style={{borderTop:`1px solid ${C.muted}`,paddingTop:'20px',marginTop:'4px'}}>
+        <Heading c={t.step6bTitle||'Nog iets anders?'} s={{fontSize:'20px'}}/>
+        <Sub c={t.step6bSub||t.step6Sub}/>
+        <div style={{background:C.accentGlow,border:`1px solid ${C.cardBorder}`,borderRadius:'14px',padding:'12px 14px',marginBottom:'14px'}}>{t.step6Examples.map((ex,i)=><div key={i} style={{color:C.textDim,fontSize:'12px',fontFamily:FB,marginBottom:'4px'}}>{ex}</div>)}</div>
+        <TagInput value={data.anythingElse} onChange={v=>setData(d=>({...d,anythingElse:v}))} placeholder={t.extraPlaceholder} suggestions={SUGG.extra[lang]||SUGG.extra.nl} addLabel={t.add}/>
+      </div>
+    </Body><Foot><PriBtn onClick={next}>{t.step6Btn(data.anythingElse.length)}</PriBtn></Foot></>)
+  }
 
   // Step 7 — Profile result
   const allPreset=[...data.enjoy.map(id=>[...ENJOY_DATA.drinks,...ENJOY_DATA.food].find(o=>o.id===id)?.[lang]),...data.rituals.map(id=>RITUAL_DATA.find(o=>o.id===id)?.[lang])].filter(Boolean)
@@ -509,7 +591,7 @@ function Onboarding({lang,setLang,userId,onComplete}){
   return(
     <div style={{flex:1,padding:'36px 24px 20px',overflowY:'auto',animation:'fadeUp 0.5s ease',display:'flex',flexDirection:'column'}}>
       <div style={{display:'flex',justifyContent:'flex-end',marginBottom:'20px'}}><LangSwitcher lang={lang} setLang={setLang}/></div>
-      <div style={{width:'68px',height:'68px',borderRadius:'50%',background:`linear-gradient(135deg,${C.accentDim},${C.accent})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'30px',marginBottom:'20px',boxShadow:`0 8px 32px ${C.accentGlow}`}}>🧑‍⚕️</div>
+      <div style={{marginBottom:'20px'}}><LHLogo size={68}/></div>
       <h2 style={{fontFamily:FD,fontSize:'36px',color:C.text,marginBottom:'6px'}}>{t.greeting(data.name)}</h2>
       <p style={{color:C.textDim,fontSize:'13px',fontFamily:FB,marginBottom:'24px'}}>{t.greetingSub}</p>
       <div style={{background:C.card,borderRadius:'20px',border:`1.5px solid ${C.accentDim}`,padding:'20px',marginBottom:'20px',boxShadow:`0 0 32px ${C.accentGlow}`}}>
@@ -570,7 +652,7 @@ function MainApp({profile,lang,setLang,userId,onSignOut}){
 
   if(showScanner)return(<Scanner lang={lang} t={t} userId={userId} onBack={()=>setShowScanner(false)} onScanSaved={handleScanSaved}/>)
 
-  const tabs=[{id:'home',icon:'🏠',label:t.tabToday},{id:'scan',icon:'📷',label:t.tabScan},{id:'window',icon:'⏱️',label:t.tabWindow},{id:'coach',icon:'🧑‍⚕️',label:t.tabCoach}]
+  const tabs=[{id:'home',icon:'🏠',label:t.tabToday},{id:'scan',icon:'📷',label:t.tabScan},{id:'goals',icon:'🎯',label:t.tabGoals||'Doelen'},{id:'coach',icon:'💬',label:t.tabCoach}]
 
   // Week stats
   const weekFasting=weekLogs.filter(l=>l.fasting_kept).length
@@ -612,10 +694,10 @@ function MainApp({profile,lang,setLang,userId,onSignOut}){
       </div>
 
       <div style={{padding:'0 20px',animation:'fadeUp 0.3s ease'}}>
-        {tab==='home'&&<HomeTab tasks={tasks} toggleTask={handleToggle} pattern={pattern} lang={lang} t={t} setShowScanner={setShowScanner} scanHistory={scanHistory}/>}
+        {tab==='home'&&<HomeTab tasks={tasks} toggleTask={handleToggle} pattern={pattern} lang={lang} t={t} setShowScanner={setShowScanner} scanHistory={scanHistory} profile={profile}/>}
         {tab==='scan'&&<Scanner lang={lang} t={t} userId={userId} onBack={()=>setTab('home')} onScanSaved={handleScanSaved}/>}
-        {tab==='window'&&<WindowTab pattern={pattern} lang={lang} t={t}/>}
-        {tab==='coach'&&<CoachTab profile={profile} lang={lang} t={t} done={done} total={tasks.length} weekFasting={weekFasting} weekMovement={weekMovement} avgGlucose={avgGlucose} weekLogs={weekLogs}/>}
+        {tab==='goals'&&<GoalsTab pattern={pattern} lang={lang} t={t} profile={profile}/>}
+        {tab==='coach'&&<CoachTab profile={profile} lang={lang} t={t} done={done} total={tasks.length} weekFasting={weekFasting} weekMovement={weekMovement} weekLogs={weekLogs}/>}
       </div>
 
       {/* Bottom nav */}
@@ -632,7 +714,7 @@ function MainApp({profile,lang,setLang,userId,onSignOut}){
 }
 
 // ─── HOME TAB ─────────────────────────────────────────────────────
-function HomeTab({tasks,toggleTask,pattern,lang,t,setShowScanner,scanHistory}){
+function HomeTab({tasks,toggleTask,pattern,lang,t,setShowScanner,scanHistory,profile}){
   const[now,setNow]=useState(new Date())
   useEffect(()=>{const i=setInterval(()=>setNow(new Date()),30000);return()=>clearInterval(i)},[])
   const h=now.getHours()+now.getMinutes()/60
@@ -656,6 +738,26 @@ function HomeTab({tasks,toggleTask,pattern,lang,t,setShowScanner,scanHistory}){
       <div style={{textAlign:'left'}}><div style={{color:C.accent,fontSize:'14px',fontWeight:'600'}}>{t.scanCta}</div><div style={{color:C.textDim,fontSize:'12px'}}>{t.scanCtaSub}</div></div>
       <span style={{color:C.accent,marginLeft:'auto',fontSize:'18px'}}>→</span>
     </button>
+    {profile?.weight&&profile?.goal_weight&&(()=>{
+      const cur=parseFloat(profile.weight),goal=parseFloat(profile.goal_weight)
+      const diff=cur-goal,pct=Math.max(0,Math.min(100,((cur-goal)/(cur-goal+0.001))*100))
+      const lost=Math.max(0,(parseFloat(profile.start_weight||cur)-cur))
+      return(
+        <div style={{background:C.card,borderRadius:'16px',border:`1px solid ${C.cardBorder}`,padding:'14px 16px',marginBottom:'14px'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:'10px'}}>
+            <span style={{color:C.text,fontSize:'14px',fontWeight:'600',fontFamily:FB}}>{t.weightWidget||'Gewichtsdoel'}</span>
+            <span style={{color:diff>0?C.warn:C.good,fontSize:'12px',fontFamily:FB}}>{diff>0?`${diff.toFixed(1)}kg ${t.weightTo||'nog'}`:t.weightGoal||'Doel bereikt! 🎉'}</span>
+          </div>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:'8px'}}>
+            <span style={{color:C.textDim,fontSize:'12px',fontFamily:FB}}>{t.weightCurrent||'Huidig'}: <b style={{color:C.text}}>{cur}kg</b></span>
+            <span style={{color:C.textDim,fontSize:'12px',fontFamily:FB}}>{t.weightGoal||'Doel'}: <b style={{color:C.accent}}>{goal}kg</b></span>
+          </div>
+          <div style={{height:'6px',background:C.muted,borderRadius:'3px',overflow:'hidden'}}>
+            <div style={{height:'100%',width:`${diff<=0?100:50}%`,background:`linear-gradient(90deg,${C.accentDim},${C.good})`,borderRadius:'3px',transition:'width 0.8s ease'}}/>
+          </div>
+        </div>
+      )
+    })()}
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'10px'}}>
       <h3 style={{fontFamily:FD,color:C.text,fontSize:'20px'}}>{t.todayTasks}</h3>
       <span style={{color:C.textDim,fontSize:'12px',fontFamily:FB}}>{tasks.filter(tk=>tk.done).length}/{tasks.length}</span>
@@ -686,16 +788,32 @@ function HomeTab({tasks,toggleTask,pattern,lang,t,setShowScanner,scanHistory}){
   </>)
 }
 
-// ─── WINDOW TAB ───────────────────────────────────────────────────
-function WindowTab({pattern,lang,t}){
+// ─── GOALS TAB ────────────────────────────────────────────────────
+function GoalsTab({pattern,lang,t,profile}){
   const movements=[
     {time:'07:30',icon:'🌅',nl:'Ochtendwandeling',en:'Morning walk',fr:'Marche matinale',de:'Morgendlicher Spaziergang',dur:'15 min',tip:{nl:'Verlaagt nuchtere bloedsuiker',en:'Lowers fasting blood sugar',fr:'Réduit la glycémie à jeun',de:'Senkt nüchternen Blutzucker'}},
     {time:'13:00',icon:'🚶',nl:'Na-lunch wandeling',en:'Post-lunch walk',fr:'Marche après déjeuner',de:'Spaziergang nach dem Mittagessen',dur:'10 min',tip:{nl:'-20% glucose piek',en:'-20% glucose spike',fr:'-20% pic de glycémie',de:'-20% Blutzuckerspitze'}},
     {time:'16:00',icon:'🏃',nl:'Bewegingsblok',en:'Movement block',fr:'Bloc de mouvement',de:'Bewegungsblock',dur:'20 min',tip:{nl:'Beste window voor training',en:'Best window for exercise',fr:'Meilleure fenêtre d\'exercice',de:'Bestes Trainingsfenster'}},
     {time:'18:30',icon:'🌇',nl:'Avondwandeling',en:'Evening walk',fr:'Promenade du soir',de:'Abendspaziergang',dur:'15 min',tip:{nl:'Sluit eetvenster goed af',en:'Closes eating window well',fr:'Clôture bien la fenêtre',de:'Schließt das Essensfenster'}},
   ]
+  const cur=profile?.weight?parseFloat(profile.weight):null
+  const goal=profile?.goal_weight?parseFloat(profile.goal_weight):null
+  const bmi=calcBMI(profile?.height,profile?.weight)
+  const MILESTONES=[{kg:2,label:'-2kg'},{kg:5,label:'-5kg'},{kg:10,label:'-10kg'},{kg:15,label:'-15kg'}]
   return(<>
-    <h3 style={{fontFamily:FD,color:C.text,fontSize:'22px',marginBottom:'14px'}}>{t.windowTitle}</h3>
+    <h3 style={{fontFamily:FD,color:C.text,fontSize:'22px',marginBottom:'14px'}}>{t.goalsTitle||'Doelen'}</h3>
+    {cur&&goal&&<div style={{background:C.card,borderRadius:'16px',border:`1px solid ${C.cardBorder}`,padding:'16px',marginBottom:'14px'}}>
+      <div style={{display:'flex',justifyContent:'space-between',marginBottom:'14px'}}>
+        <div style={{textAlign:'center'}}><div style={{color:C.text,fontSize:'22px',fontFamily:FD,fontWeight:'700'}}>{cur}kg</div><div style={{color:C.textDim,fontSize:'11px',fontFamily:FB}}>{t.weightCurrent||'Huidig'}</div></div>
+        <div style={{textAlign:'center'}}>{bmi&&<><div style={{color:C.accent,fontSize:'22px',fontFamily:FD,fontWeight:'700'}}>{bmi}</div><div style={{color:C.textDim,fontSize:'11px',fontFamily:FB}}>BMI</div></>}</div>
+        <div style={{textAlign:'center'}}><div style={{color:C.good,fontSize:'22px',fontFamily:FD,fontWeight:'700'}}>{goal}kg</div><div style={{color:C.textDim,fontSize:'11px',fontFamily:FB}}>{t.weightGoal||'Doel'}</div></div>
+      </div>
+      <div style={{marginBottom:'14px'}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:'4px'}}><span style={{color:C.textDim,fontSize:'11px',fontFamily:FB}}>{t.milestones||'Mijlpalen'}</span></div>
+        <div style={{display:'flex',gap:'8px'}}>{MILESTONES.map(m=>{const reached=cur&&goal&&(cur-goal)<=-(m.kg-0.01);return(<div key={m.kg} style={{flex:1,padding:'8px 4px',borderRadius:'10px',background:reached?C.goodGlow:C.muted,border:`1px solid ${reached?C.good:C.cardBorder}`,textAlign:'center'}}><div style={{color:reached?C.good:C.textDim,fontSize:'12px',fontFamily:FB,fontWeight:'600'}}>{m.label}</div>{reached&&<div style={{color:C.good,fontSize:'14px'}}>✓</div>}</div>)})}</div>
+      </div>
+    </div>}
+    <h3 style={{fontFamily:FD,color:C.text,fontSize:'22px',marginBottom:'14px',marginTop:'4px'}}>{t.windowTitle}</h3>
     <div style={{background:C.card,borderRadius:'16px',border:`1px solid ${C.cardBorder}`,padding:'16px',marginBottom:'14px'}}>
       <div style={{display:'flex',justifyContent:'space-around',marginBottom:'14px'}}>
         {[{label:pattern.id.split('-')[0]+'u',sub:{nl:'eten',en:'eating',fr:'manger',de:'essen'}},{label:pattern.id.split('-')[1]+'u',sub:{nl:'vasten',en:'fasting',fr:'jeûne',de:'fasten'}}].map((item,i)=>(
@@ -721,36 +839,85 @@ function WindowTab({pattern,lang,t}){
 }
 
 // ─── COACH TAB ────────────────────────────────────────────────────
-function CoachTab({profile,lang,t,done,total,weekFasting,weekMovement,avgGlucose,weekLogs}){
-  const[msg,setMsg]=useState('');const[loading,setLoading]=useState(true);const[streaming,setStreaming]=useState(false)
-  useEffect(()=>{load()},[done,lang])
-  const load=async()=>{setLoading(true);setMsg('');setStreaming(true);try{await streamAI(coachDailyPrompt(profile,lang,done,total),setMsg)}catch{setMsg(`${profile.first_name||profile.name}, goed bezig!`)}setLoading(false);setStreaming(false)}
+function CoachTab({profile,lang,t,done,total,weekFasting,weekMovement,weekLogs}){
+  const[chat,setChat]=useState([])
+  const[chatInput,setChatInput]=useState('')
+  const[chatLoading,setChatLoading]=useState(false)
+  const[streaming,setStreaming]=useState(false)
+  const chatEndRef=useRef(null)
+
+  useEffect(()=>{loadDaily()},[done,lang])
+  useEffect(()=>{chatEndRef.current?.scrollIntoView({behavior:'smooth'})},[chat])
+
+  const loadDaily=async()=>{
+    setChat([{role:'assistant',text:'',loading:true}])
+    let full=''
+    try{
+      await streamAI(
+        coachDailyPrompt(profile,lang,done,total),
+        (t)=>{full=t;setChat([{role:'assistant',text:t,loading:false}])},
+        coachSystemPrompt(profile,lang)
+      )
+    }catch{
+      const name=profile.first_name||profile.name
+      setChat([{role:'assistant',text:done===0?`${name}, een nieuwe dag begint. Zet de eerste stap — open je eetvenster.`:`${name}, goed bezig! ${done} van ${total} taken gedaan.`,loading:false}])
+    }
+  }
+
+  const sendMessage=async()=>{
+    const msg=chatInput.trim()
+    if(!msg||chatLoading)return
+    setChatInput('')
+    const newChat=[...chat,{role:'user',text:msg}]
+    setChat([...newChat,{role:'assistant',text:'',loading:true}])
+    setChatLoading(true);setStreaming(true)
+    // Build conversation history for context
+    const messages=newChat.map(m=>({role:m.role==='assistant'?'assistant':'user',content:m.text}))
+    try{
+      await streamAI(
+        msg,
+        (t)=>setChat(prev=>[...prev.slice(0,-1),{role:'assistant',text:t,loading:false}]),
+        coachSystemPrompt(profile,lang)
+      )
+    }catch{
+      setChat(prev=>[...prev.slice(0,-1),{role:'assistant',text:'Sorry, even geen verbinding. Probeer opnieuw.',loading:false}])
+    }
+    setChatLoading(false);setStreaming(false)
+  }
+
   const weekData=[
     {label:t.weekFasting,val:weekLogs.length>0?t.fastingDays(weekFasting):t.noData,color:weekFasting>=5?C.good:weekFasting>=3?C.gold:C.textDim},
     {label:t.weekMovement,val:weekLogs.length>0?t.fastingDays(weekMovement):t.noData,color:weekMovement>=5?C.good:weekMovement>=3?C.gold:C.textDim},
-    {label:t.weekGlucose,val:avgGlucose?`${avgGlucose} mmol/L`:t.noData,color:avgGlucose&&avgGlucose<7.5?C.good:avgGlucose?C.gold:C.textDim},
     {label:t.weekStreak,val:`${profile.streak||0} 🔥`,color:C.gold},
   ]
+
   return(<>
     <h3 style={{fontFamily:FD,color:C.text,fontSize:'22px',marginBottom:'14px'}}>{t.coachTitle}</h3>
-    <div style={{background:C.card,borderRadius:'20px',border:`1.5px solid ${C.accentDim}`,padding:'20px',marginBottom:'16px',boxShadow:`0 0 32px ${C.accentGlow}`,position:'relative',overflow:'hidden'}}>
-      <div style={{position:'absolute',top:'-30px',right:'-30px',width:'100px',height:'100px',borderRadius:'50%',background:C.accentGlow,filter:'blur(30px)',pointerEvents:'none'}}/>
-      <div style={{display:'flex',gap:'12px',alignItems:'flex-start',position:'relative'}}>
-        <div style={{width:'44px',height:'44px',borderRadius:'50%',background:`linear-gradient(135deg,${C.accentDim},${C.accent})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',flexShrink:0}}>🧑‍⚕️</div>
-        <div style={{flex:1}}>
-          <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}}>
-            <span style={{color:C.accent,fontSize:'11px',fontWeight:'600',fontFamily:FB,letterSpacing:'1px',textTransform:'uppercase'}}>{t.aiCoachLabel}</span>
-            {streaming&&<span style={{display:'inline-flex',gap:'3px'}}>{[0,1,2].map(i=><span key={i} style={{width:'4px',height:'4px',borderRadius:'50%',background:C.accent,animation:`bounce 1s ease ${i*0.15}s infinite`,display:'inline-block'}}/>)}</span>}
+
+    {/* Chat thread */}
+    <div style={{marginBottom:'10px'}}>
+      {chat.map((m,i)=>(
+        <div key={i} style={{display:'flex',gap:'10px',marginBottom:'12px',justifyContent:m.role==='user'?'flex-end':'flex-start'}}>
+          {m.role==='assistant'&&<div style={{width:'36px',height:'36px',borderRadius:'50%',background:`linear-gradient(135deg,${C.accentDim},${C.accent})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'16px',flexShrink:0,alignSelf:'flex-end'}}>💬</div>}
+          <div style={{maxWidth:'80%',padding:'12px 14px',borderRadius:m.role==='user'?'16px 16px 4px 16px':'16px 16px 16px 4px',background:m.role==='user'?`linear-gradient(135deg,${C.accentDim},${C.accent})`:`${C.card}`,border:m.role==='user'?'none':`1px solid ${C.cardBorder}`}}>
+            {m.loading?<span style={{display:'inline-flex',gap:'3px'}}>{[0,1,2].map(j=><span key={j} style={{width:'5px',height:'5px',borderRadius:'50%',background:C.accent,animation:`bounce 0.9s ease ${j*0.15}s infinite`,display:'inline-block'}}/>)}</span>:<p style={{color:m.role==='user'?'#fff':C.text,fontSize:'14px',lineHeight:'1.6',fontFamily:FB,margin:0}}>{m.text}</p>}
           </div>
-          {loading&&!msg?<div style={{display:'flex',flexDirection:'column',gap:'6px'}}>{[100,75,90].map((w,i)=><div key={i} style={{height:'10px',borderRadius:'5px',background:C.muted,width:`${w}%`,animation:`pulse 1.5s ease ${i*0.2}s infinite`}}/>)}</div>:<p style={{color:C.text,fontSize:'14px',lineHeight:'1.65',fontFamily:FB,margin:0}}>{msg}</p>}
         </div>
-      </div>
-      <button onClick={load} style={{marginTop:'12px',padding:'6px 14px',background:'transparent',border:`1px solid ${C.cardBorder}`,borderRadius:'20px',color:C.textDim,fontSize:'11px',cursor:'pointer',fontFamily:FB}}>{t.refresh}</button>
+      ))}
+      <div ref={chatEndRef}/>
     </div>
+
+    {/* Chat input */}
+    <div style={{display:'flex',gap:'8px',marginBottom:'20px',position:'sticky',bottom:'90px'}}>
+      <input value={chatInput} onChange={e=>setChatInput(e.target.value)} onKeyDown={e=>e.key==='Enter'&&!e.shiftKey&&sendMessage()} placeholder={t.chatPlaceholder||'Stel je coach een vraag...'} style={{flex:1,padding:'12px 16px',background:C.card,border:`1.5px solid ${C.cardBorder}`,borderRadius:'14px',color:C.text,fontSize:'14px',fontFamily:FB,outline:'none'}}/>
+      <button onClick={sendMessage} disabled={!chatInput.trim()||chatLoading} style={{padding:'12px 18px',background:chatInput.trim()?`linear-gradient(135deg,${C.accentDim},${C.accent})`:C.muted,border:'none',borderRadius:'14px',color:'#fff',cursor:chatInput.trim()?'pointer':'default',fontSize:'16px',transition:'all 0.2s'}}>{t.chatSend||'→'}</button>
+    </div>
+
+    {/* Week stats */}
     <div style={{background:C.card,borderRadius:'16px',border:`1px solid ${C.cardBorder}`,padding:'16px'}}>
       <h4 style={{color:C.text,fontFamily:FB,fontSize:'14px',fontWeight:'600',marginBottom:'12px'}}>{t.weekInsight}</h4>
       {weekData.map((item,i)=>(
-        <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'9px 0',borderBottom:i<3?`1px solid ${C.muted}`:'none'}}>
+        <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'9px 0',borderBottom:i<weekData.length-1?`1px solid ${C.muted}`:'none'}}>
           <span style={{color:C.textDim,fontSize:'13px',fontFamily:FB}}>{item.label}</span>
           <span style={{color:item.color,fontSize:'13px',fontFamily:FB,fontWeight:'600'}}>{item.val}</span>
         </div>
@@ -926,6 +1093,9 @@ export default function LudwigHealth(){
       eat_start:       patternObj.eatStart,
       eat_end:         patternObj.eatEnd,
       streak:          0,
+      weight:          data.weight||null,
+      goal_weight:     data.goalWeight||null,
+      height:          data.height||null,
       enjoy:           [...data.enjoy.map(id=>[...ENJOY_DATA.drinks,...ENJOY_DATA.food].find(o=>o.id===id)?.[data.lang||'nl']),...(data.customEnjoy||[])].filter(Boolean),
     })
     setLang(data.lang||'nl')
@@ -961,8 +1131,8 @@ export default function LudwigHealth(){
         {/* Loading */}
         {(!screen||authLoading)&&(
           <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'16px'}}>
-            <div style={{fontSize:'48px',animation:'bounce 1s ease infinite'}}>🩺</div>
-            <h1 style={{fontFamily:FD,fontSize:'32px',color:C.text}}>Glyco<span style={{color:C.accent}}>Day</span></h1>
+            <div style={{animation:'bounce 1s ease infinite'}}><LHLogo size={56}/></div>
+            <h1 style={{fontFamily:FD,fontSize:'32px',color:C.text}}>Ludwig <span style={{color:C.accent}}>Health</span></h1>
           </div>
         )}
 
