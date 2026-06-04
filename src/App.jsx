@@ -26,7 +26,7 @@ const FB = "'Plus Jakarta Sans', sans-serif"
 const LANGS = { nl:'🇳🇱 NL', en:'🇬🇧 EN', fr:'🇫🇷 FR', de:'🇩🇪 DE' }
 const T = {
   nl:{
-    appTagline:'Jouw diabetes coach — die jouw leven begrijpt.',
+    appTagline:'Ludwig Health — Jouw persoonlijke gezondheidscoach.',
     startBtn:'Start mijn persoonlijk profiel →',splashSub:'2 minuten · Jij bepaalt',
     splashFeatures:[['🎯','Geen verboden — alleen slimme upgrades'],['🧑‍⚕️','AI coach die jóúw gewoontes kent'],['📷','Supermarkt scanner met direct advies'],['✍️','Jij vertelt ons zelf wat bij jou past']],
     step:'Stap',of:'van',next:'Verder →',add:'Toevoegen',skip:'Overslaan',
@@ -50,7 +50,7 @@ const T = {
     step6Btn:(n)=>n>0?`${n} items — bouw mijn profiel →`:'Overslaan — bouw mijn profiel →',
     step6Added:(n)=>`Jij voegde toe (${n})`,
     coachSays:'Jouw coach',profileItems:(n)=>`Jouw profiel (${n} items)`,ownLabel:'✏️ = door jou toegevoegd',
-    patternLabel:'Patroon',fastingLabel:'vasten',startApp:(n)=>`Start GlycoDay, ${n} →`,coachBusy:'Coach is bezig...',
+    patternLabel:'Patroon',fastingLabel:'vasten',startApp:(n)=>`Start Ludwig Health, ${n} →`,coachBusy:'Coach is bezig...',
     greeting:(n)=>`Hallo ${n}!`,greetingSub:'Je coach heeft je profiel gelezen.',
     tabToday:'Vandaag',tabScan:'Scan',tabWindow:'Venster',tabCoach:'Coach',
     goodMorning:(n)=>`Goedemorgen, ${n}`,streak:'dagen',progress:'Dagvoortgang',
@@ -74,7 +74,7 @@ const T = {
     fastingDays:(n)=>`${n}/7 dagen`,noData:'Nog geen data deze week',
   },
   en:{
-    appTagline:'Your diabetes coach — who understands your life.',
+    appTagline:'Ludwig Health — Your personal health coach.',
     startBtn:'Start my personal profile →',splashSub:'2 minutes · You decide',
     splashFeatures:[['🎯','No restrictions — only smart upgrades'],['🧑‍⚕️','AI coach who knows your habits'],['📷','Supermarket scanner with instant advice'],['✍️','You tell us what fits your life']],
     step:'Step',of:'of',next:'Continue →',add:'Add',skip:'Skip',
@@ -98,7 +98,7 @@ const T = {
     step6Btn:(n)=>n>0?`${n} items — build my profile →`:'Skip — build my profile →',
     step6Added:(n)=>`You added (${n})`,
     coachSays:'Your coach',profileItems:(n)=>`Your profile (${n} items)`,ownLabel:'✏️ = added by you',
-    patternLabel:'Pattern',fastingLabel:'fasting',startApp:(n)=>`Start GlycoDay, ${n} →`,coachBusy:'Coach is busy...',
+    patternLabel:'Pattern',fastingLabel:'fasting',startApp:(n)=>`Start Ludwig Health, ${n} →`,coachBusy:'Coach is busy...',
     greeting:(n)=>`Hello ${n}!`,greetingSub:'Your coach has read your profile.',
     tabToday:'Today',tabScan:'Scan',tabWindow:'Window',tabCoach:'Coach',
     goodMorning:(n)=>`Good morning, ${n}`,streak:'days',progress:'Daily progress',
@@ -194,7 +194,7 @@ const T = {
     step6Btn:(n)=>n>0?`${n} Elemente — Profil erstellen →`:'Überspringen — Profil erstellen →',
     step6Added:(n)=>`Du hast hinzugefügt (${n})`,
     coachSays:'Dein Coach',profileItems:(n)=>`Dein Profil (${n} Elemente)`,ownLabel:'✏️ = von dir hinzugefügt',
-    patternLabel:'Muster',fastingLabel:'Fasten',startApp:(n)=>`GlycoDay starten, ${n} →`,coachBusy:'Coach ist beschäftigt...',
+    patternLabel:'Muster',fastingLabel:'Fasten',startApp:(n)=>`Ludwig Health starten, ${n} →`,coachBusy:'Coach ist beschäftigt...',
     greeting:(n)=>`Hallo ${n}!`,greetingSub:'Dein Coach hat dein Profil gelesen.',
     tabToday:'Heute',tabScan:'Scan',tabWindow:'Fenster',tabCoach:'Coach',
     goodMorning:(n)=>`Guten Morgen, ${n}`,streak:'Tage',progress:'Tagesfortschritt',
@@ -301,13 +301,13 @@ function buildProfilePrompt(name,data,lang){
   const enjoy=[...lbl(data.enjoy,[...ENJOY_DATA.drinks,...ENJOY_DATA.food]),...(data.customEnjoy||[])]
   const rituals=[...lbl(data.rituals,RITUAL_DATA),...(data.customRituals||[])]
   const extras=data.anythingElse||[]
-  const L={nl:`Je bent een warme diabetes leefstijlcoach. Schrijf een persoonlijk welkomstbericht in het Nederlands voor ${name}. Profiel: geniet van: ${enjoy.join(', ')}. Rituelen: ${rituals.join(', ')}. Zelf toegevoegd: ${extras.join(', ')||'niets'}. Patroon: ${data.pattern}. 3-4 zinnen, noem 2-3 concrete zaken, niets wordt afgepakt, eindig met 1 actie voor vandaag.`,en:`You are a warm diabetes lifestyle coach. Write a personal welcome in English for ${name}. Profile: enjoys: ${enjoy.join(', ')}. Rituals: ${rituals.join(', ')}. Self-added: ${extras.join(', ')||'nothing'}. Pattern: ${data.pattern}. 3-4 sentences, mention 2-3 specific things, nothing taken away, end with 1 action for today.`,fr:`Vous êtes un coach diabète chaleureux. Rédigez un message de bienvenue en français pour ${name}. Profil: apprécie: ${enjoy.join(', ')}. Rituels: ${rituals.join(', ')}. Ajouté soi-même: ${extras.join(', ')||'rien'}. Schéma: ${data.pattern}. 3-4 phrases, 2-3 éléments concrets, rien supprimé, 1 action pour aujourd'hui.`,de:`Du bist ein warmer Diabetes-Coach. Schreibe ein persönliches Willkommen auf Deutsch für ${name}. Profil: genießt: ${enjoy.join(', ')}. Rituale: ${rituals.join(', ')}. Selbst hinzugefügt: ${extras.join(', ')||'nichts'}. Muster: ${data.pattern}. 3-4 Sätze, 2-3 konkrete Dinge, nichts weggenommen, 1 Aktion für heute.`}
+  const L={nl:`Je bent een warme gezondheidscoach. Schrijf een persoonlijk welkomstbericht in het Nederlands voor ${name}. Profiel: geniet van: ${enjoy.join(', ')}. Rituelen: ${rituals.join(', ')}. Zelf toegevoegd: ${extras.join(', ')||'niets'}. Patroon: ${data.pattern}. 3-4 zinnen, noem 2-3 concrete zaken, niets wordt afgepakt, eindig met 1 actie voor vandaag.`,en:`You are a warm health coach. Write a personal welcome in English for ${name}. Profile: enjoys: ${enjoy.join(', ')}. Rituals: ${rituals.join(', ')}. Self-added: ${extras.join(', ')||'nothing'}. Pattern: ${data.pattern}. 3-4 sentences, mention 2-3 specific things, nothing taken away, end with 1 action for today.`,fr:`Vous êtes un coach diabète chaleureux. Rédigez un message de bienvenue en français pour ${name}. Profil: apprécie: ${enjoy.join(', ')}. Rituels: ${rituals.join(', ')}. Ajouté soi-même: ${extras.join(', ')||'rien'}. Schéma: ${data.pattern}. 3-4 phrases, 2-3 éléments concrets, rien supprimé, 1 action pour aujourd'hui.`,de:`Du bist ein warmer Gesundheits-Coach. Schreibe ein persönliches Willkommen auf Deutsch für ${name}. Profil: genießt: ${enjoy.join(', ')}. Rituale: ${rituals.join(', ')}. Selbst hinzugefügt: ${extras.join(', ')||'nichts'}. Muster: ${data.pattern}. 3-4 Sätze, 2-3 konkrete Dinge, nichts weggenommen, 1 Aktion für heute.`}
   return L[lang]||L.nl
 }
 
 function coachDailyPrompt(profile,lang,done,total){
   const enjoy=(profile.enjoy||[]).slice(0,3).join(', ')
-  const L={nl:`Je bent een warme diabetes leefstijlcoach. Schrijf een persoonlijke dagelijkse boodschap in het Nederlands voor ${profile.first_name}. Streak: ${profile.streak||0} dagen. Patroon: ${profile.fasting_pattern}. Taken vandaag: ${done}/${total}. Geniet van: ${enjoy}. Max 2 zinnen, eindig met een concrete actie.`,en:`You are a warm diabetes lifestyle coach. Write a personal daily message in English for ${profile.first_name}. Streak: ${profile.streak||0} days. Pattern: ${profile.fasting_pattern}. Tasks today: ${done}/${total}. Enjoys: ${enjoy}. Max 2 sentences, end with a concrete action.`,fr:`Vous êtes un coach diabète chaleureux. Rédigez un message quotidien en français pour ${profile.first_name}. Série: ${profile.streak||0} jours. Schéma: ${profile.fasting_pattern}. Tâches: ${done}/${total}. Apprécie: ${enjoy}. Max 2 phrases, terminez par une action concrète.`,de:`Du bist ein warmer Diabetes-Coach. Schreibe eine tägliche Nachricht auf Deutsch für ${profile.first_name}. Streak: ${profile.streak||0} Tage. Muster: ${profile.fasting_pattern}. Aufgaben: ${done}/${total}. Genießt: ${enjoy}. Max 2 Sätze, mit konkreter Aktion enden.`}
+  const L={nl:`Je bent een warme gezondheidscoach. Schrijf een persoonlijke dagelijkse boodschap in het Nederlands voor ${profile.first_name}. Streak: ${profile.streak||0} dagen. Patroon: ${profile.fasting_pattern}. Taken vandaag: ${done}/${total}. Geniet van: ${enjoy}. Max 2 zinnen, eindig met een concrete actie.`,en:`You are a warm health coach. Write a personal daily message in English for ${profile.first_name}. Streak: ${profile.streak||0} days. Pattern: ${profile.fasting_pattern}. Tasks today: ${done}/${total}. Enjoys: ${enjoy}. Max 2 sentences, end with a concrete action.`,fr:`Vous êtes un coach diabète chaleureux. Rédigez un message quotidien en français pour ${profile.first_name}. Série: ${profile.streak||0} jours. Schéma: ${profile.fasting_pattern}. Tâches: ${done}/${total}. Apprécie: ${enjoy}. Max 2 phrases, terminez par une action concrète.`,de:`Du bist ein warmer Gesundheits-Coach. Schreibe eine tägliche Nachricht auf Deutsch für ${profile.first_name}. Streak: ${profile.streak||0} Tage. Muster: ${profile.fasting_pattern}. Aufgaben: ${done}/${total}. Genießt: ${enjoy}. Max 2 Sätze, mit konkreter Aktion enden.`}
   return L[lang]||L.nl
 }
 
@@ -446,7 +446,7 @@ function Onboarding({lang,setLang,userId,onComplete}){
     ;(async()=>{
       setStreaming(true);setWelcome('')
       try{await streamAI(buildProfilePrompt(data.name,data,lang),setWelcome)}
-      catch{setWelcome(`${data.name}, welkom bij GlycoDay!`)}
+      catch{setWelcome(`${data.name}, welkom bij Ludwig Health!`)}
       setStreaming(false)
       // Save to Supabase if logged in
       if(userId){
@@ -886,7 +886,7 @@ function Scanner({lang,t,userId,onBack,onScanSaved}){
 // ═══════════════════════════════════════════════════════════════
 // ROOT
 // ═══════════════════════════════════════════════════════════════
-export default function GlycoDay(){
+export default function LudwigHealth(){
   const{session,user,loading:authLoading}=useAuth()
   const[screen,setScreen]=useState(null) // null=loading, 'auth', 'onboarding', 'app'
   const[profile,setProfile]=useState(null)
